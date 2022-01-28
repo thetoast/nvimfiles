@@ -27,6 +27,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'vim-scripts/Liquid-Carbon'
 Plug 'purescript-contrib/purescript-vim'
+Plug 'lukas-reineke/indent-blankline.nvim'
 call plug#end()
 
 colorscheme liquidcarbon
@@ -117,7 +118,8 @@ nvim_lsp.purescriptls.setup {
   settings = {
     purescript = {
       addSpagoSources = true, -- e.g. any purescript language-server config here
-      addNpmPath = true
+      addNpmPath = true,
+      formatter = "purs-tidy"
     }
   },
   flags = {
@@ -136,3 +138,13 @@ EOF
 " set up ALE
 let g:ale_linters = {'rust': ['analyzer']}
 let g:ale_rust_analyzer_executable = "/Users/ryan/.rustup/toolchains/nightly-aarch64-apple-darwin/bin/rust-analyzer"
+
+" set up indent_blankline
+lua << EOF
+vim.opt.list = true
+vim.opt.listchars:append("eol:↴")
+
+require("indent_blankline").setup {
+  show_end_of_line = true,
+}
+EOF
