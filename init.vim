@@ -28,9 +28,16 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'vim-scripts/Liquid-Carbon'
 Plug 'purescript-contrib/purescript-vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'sainnhe/everforest'
 call plug#end()
 
-colorscheme liquidcarbon
+" Colorscheme
+let g:everforest_transparent_background=1
+let g:everforest_ui_contrast='high'
+let g:everforest_diagnostic_text_highlight=1
+let g:everforest_diagnostic_line_highlight=1
+let g:everforest_diagnostic_virtual_text='colored'
+colorscheme everforest
 
 " autocommands
 autocmd FileType purescript let b:vcm_tab_complete = 'omni'
