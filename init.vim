@@ -41,6 +41,7 @@ colorscheme everforest
 
 " autocommands
 autocmd FileType purescript let b:vcm_tab_complete = 'omni'
+autocmd FileType purescript set formatoptions+=ro
 
 " set up lspconfig and bind some convenience things {{{
 lua << EOF
