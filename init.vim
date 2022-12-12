@@ -104,8 +104,11 @@ nvim_lsp.rust_analyzer.setup {
 
 -- set up purescript stuff, e.g. purescript-language-server
 ps_complete_done = function (word, fileUri)
-  arguments = vim.api.nvim_get_vvar('completed_item')['user_data']['nvim']['lsp']['completion_item']['command']['arguments']
-  vim.lsp.buf.execute_command({ command="purescript.addCompletionImport", arguments=arguments })
+  function autoImport ()
+    arguments = vim.api.nvim_get_vvar('completed_item')['user_data']['nvim']['lsp']['completion_item']['command']['arguments']
+    vim.lsp.buf.execute_command({ command="purescript.addCompletionImport", arguments=arguments })
+  end
+  pcall(autoImport)
 end
 
 local on_ps_attach = function (client, bufnr)
