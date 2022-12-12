@@ -29,6 +29,7 @@ Plug 'vim-scripts/Liquid-Carbon'
 Plug 'purescript-contrib/purescript-vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sainnhe/everforest'
+Plug 'ncm2/float-preview'
 call plug#end()
 
 " Colorscheme
@@ -42,6 +43,10 @@ colorscheme everforest
 " autocommands
 autocmd FileType purescript let b:vcm_tab_complete = 'omni'
 autocmd FileType purescript set formatoptions+=ro
+
+" set up floating preview
+set completeopt-=preview
+let g:float_preview#docked=0
 
 " set up lspconfig and bind some convenience things {{{
 lua << EOF
@@ -74,14 +79,14 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
+  elseif client.server_capabilities.document_range_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec([[
       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
@@ -114,6 +119,7 @@ end
 local on_ps_attach = function (client, bufnr)
   vim.api.nvim_command("autocmd CompleteDone <buffer> lua ps_complete_done(vim.fn.expand('<cword>'), vim.fn.expand('%:p'))")
   vim.api.nvim_command("inoremap <expr> <CR> pumvisible() ? '<C-y> ' : '<CR>'")
+  vim.api.nvim_command("inoremap <expr> <Esc> pumvisible() ? '<C-e>' : '<CR>'")
   on_attach(client, bufnr)
 end
 -- this seems to not prompt for possible completions as documentation might suggest?
