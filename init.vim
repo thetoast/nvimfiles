@@ -48,6 +48,9 @@ autocmd FileType purescript set formatoptions+=ro
 set completeopt-=preview
 let g:float_preview#docked=0
 
+" keep purescript conceal simple
+let g:purescript_unicode_conceal_disable_common=1
+
 " set up lspconfig and bind some convenience things {{{
 lua << EOF
 local nvim_lsp = require('lspconfig')
