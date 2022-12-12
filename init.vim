@@ -104,25 +104,26 @@ nvim_lsp.rust_analyzer.setup {
 
 -- set up purescript stuff, e.g. purescript-language-server
 ps_complete_done = function (word, fileUri)
-  print('complete called with', word, fileUri)
-  vim.lsp.buf.execute_command({ command="purecript.importCompletionImport", arguments={word, nil, nil, fileUri} })
+  arguments = vim.api.nvim_get_vvar('completed_item')['user_data']['nvim']['lsp']['completion_item']['command']['arguments']
+  vim.lsp.buf.execute_command({ command="purescript.addCompletionImport", arguments=arguments })
 end
 
 local on_ps_attach = function (client, bufnr)
   vim.api.nvim_command("autocmd CompleteDone <buffer> lua ps_complete_done(vim.fn.expand('<cword>'), vim.fn.expand('%:p'))")
   on_attach(client, bufnr)
 end
-ps_add_import = function ()
-  local word = vim.fn.expand('<cword>')
-  local fileUri = 'file://' .. vim.fn.expand('%:p')
-  print('add import called with', word, fileUri)
-  vim.lsp.buf.execute_command({ command="purecript.importCompletionImport", arguments={word, nil, nil, fileUri} })
-end
+-- this seems to not prompt for possible completions as documentation might suggest?
+--ps_add_import = function ()
+--  local word = vim.fn.expand('<cword>')
+--  local fileUri = 'file://' .. vim.fn.expand('%:p')
+--  print('add import called with', word, fileUri)
+--  vim.lsp.buf.execute_command({ command="purescript.addCompletionImport", arguments={word, nil, nil, fileUri} })
+--end
 
 nvim_lsp.purescriptls.setup {
   cmd = { "yarn", "run", "purescript-language-server", "--stdio" },
-  --on_attach = on_ps_attach,
-  on_attach = on_attach,
+  on_attach = on_ps_attach,
+  --on_attach = on_attach,
   settings = {
     purescript = {
       addSpagoSources = true, -- e.g. any purescript language-server config here
