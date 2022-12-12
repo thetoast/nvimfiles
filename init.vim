@@ -113,6 +113,7 @@ end
 
 local on_ps_attach = function (client, bufnr)
   vim.api.nvim_command("autocmd CompleteDone <buffer> lua ps_complete_done(vim.fn.expand('<cword>'), vim.fn.expand('%:p'))")
+  vim.api.nvim_command("inoremap <expr> <CR> pumvisible() ? '<C-y> ' : '<CR>'")
   on_attach(client, bufnr)
 end
 -- this seems to not prompt for possible completions as documentation might suggest?
