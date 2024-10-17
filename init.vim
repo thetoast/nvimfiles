@@ -30,6 +30,7 @@ Plug 'purescript-contrib/purescript-vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sainnhe/everforest'
 Plug 'ncm2/float-preview'
+Plug 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 call plug#end()
 
 " Colorscheme
@@ -43,6 +44,7 @@ colorscheme everforest
 " autocommands
 autocmd FileType purescript let b:vcm_tab_complete = 'omni'
 autocmd FileType purescript set formatoptions+=ro
+autocmd FileType unison let b:vcm_tab_complete = 'omni'
 
 " set up floating preview
 set completeopt-=preview
@@ -122,6 +124,10 @@ nvim_lsp.purescriptls.setup {
       formatter = "purs-tidy"
     }
   }
+}
+
+nvim_lsp.unison.setup {
+  on_attach = on_attach
 }
 
 -- Use a loop to conveniently both simple servers
